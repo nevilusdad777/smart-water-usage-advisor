@@ -72,6 +72,18 @@ document.addEventListener('DOMContentLoaded', () => {
     gardenVal.textContent = gardenInput.value;
   });
 
+  function getQuizAnswers() {
+    const quizAnswers = {};
+    document.querySelectorAll('.yn-toggle').forEach((group) => {
+      const q = group.dataset.q;
+      if (q) {
+        const selectedBtn = group.querySelector('button.selected');
+        quizAnswers[q] = selectedBtn ? selectedBtn.dataset.val === 'yes' : false;
+      }
+    });
+    return quizAnswers;
+  }
+
   // Quiz Yes/No Toggles
   document.querySelectorAll('.yn-toggle').forEach((group) => {
     const q = group.dataset.q;
@@ -81,6 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
         group.querySelectorAll('button').forEach((x) => x.classList.remove('selected'));
         b.classList.add('selected');
         answers[q] = b.dataset.val === 'yes';
+        // Instantly recalculate risk report on toggle click
+        runLeakAssessment();
       });
     });
   });
@@ -213,11 +227,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const loading = document.getElementById('leakLoading');
 
     try {
+      const currentAnswers = getQuizAnswers();
+      // Synchronize answers state object
+      Object.assign(answers, currentAnswers);
+
       // 1. Fetch risk calculation
       const res = await fetch('/api/leak-risk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(answers),
+        body: JSON.stringify(currentAnswers),
       });
       const rawData = await res.json();
 
@@ -270,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          answers,
+          answers: currentAnswers,
           score: data.score,
           flag: data.flag,
           details: data.detected_signal_details,
