@@ -142,11 +142,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --------------------------------------------------------------------------
   // 4. SVG Gauge Ring Animation
-  // --------------------------------------------------------------------------
+  let gaugeTimer = null;
+
   function setGaugeScore(score) {
     const progressCircle = document.getElementById('gaugeProgress');
     const scoreVal = document.getElementById('leakScoreVal');
     const maxOffset = 326.7; // 2 * PI * 52
+
+    // Clear any existing counter animation timer immediately
+    if (gaugeTimer) {
+      clearInterval(gaugeTimer);
+      gaugeTimer = null;
+    }
 
     // Calculate offset
     const offset = maxOffset - (score / 100) * maxOffset;
@@ -161,17 +168,23 @@ document.addEventListener('DOMContentLoaded', () => {
       progressCircle.style.stroke = '#dc2626'; // crimson
     }
 
-    // Score counter animation
-    let count = 0;
-    const interval = setInterval(() => {
-      if (count >= score) {
+    // Smooth counter animation from current displayed value to target score
+    let current = parseInt(scoreVal.textContent) || 0;
+    if (current === score) {
+      scoreVal.textContent = score;
+      return;
+    }
+
+    const step = current < score ? 1 : -1;
+    gaugeTimer = setInterval(() => {
+      current += step;
+      scoreVal.textContent = current;
+      if ((step > 0 && current >= score) || (step < 0 && current <= score)) {
         scoreVal.textContent = score;
-        clearInterval(interval);
-      } else {
-        count++;
-        scoreVal.textContent = count;
+        clearInterval(gaugeTimer);
+        gaugeTimer = null;
       }
-    }, 12);
+    }, 15);
   }
 
   // --------------------------------------------------------------------------
