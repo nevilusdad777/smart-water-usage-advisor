@@ -145,17 +145,22 @@ document.addEventListener('DOMContentLoaded', () => {
   let gaugeTimer = null;
 
   function setGaugeScore(score) {
+    // Sanitize input: convert score to a valid integer bounded strictly within [0, 100]
+    score = Number(score);
+    if (isNaN(score)) score = 0;
+    score = Math.max(0, Math.min(100, Math.round(score)));
+
     const progressCircle = document.getElementById('gaugeProgress');
     const scoreVal = document.getElementById('leakScoreVal');
     const maxOffset = 326.7; // 2 * PI * 52
 
-    // Clear any existing counter animation timer immediately
+    // Clear any existing active animation timer immediately
     if (gaugeTimer) {
       clearInterval(gaugeTimer);
       gaugeTimer = null;
     }
 
-    // Calculate offset
+    // Calculate stroke offset
     const offset = maxOffset - (score / 100) * maxOffset;
     progressCircle.style.strokeDashoffset = offset;
 
@@ -168,8 +173,12 @@ document.addEventListener('DOMContentLoaded', () => {
       progressCircle.style.stroke = '#dc2626'; // crimson
     }
 
-    // Smooth counter animation from current displayed value to target score
+    // Read current displayed score safely
     let current = parseInt(scoreVal.textContent) || 0;
+    if (isNaN(current) || current < 0 || current > 100) {
+      current = 0;
+    }
+
     if (current === score) {
       scoreVal.textContent = score;
       return;
@@ -210,7 +219,17 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(answers),
       });
-      const data = await res.json();
+      const rawData = await res.json();
+
+      // Defensive fallback defaults for safety
+      const data = {
+        score: typeof rawData.score === 'number' ? rawData.score : 0,
+        flag: rawData.flag || 'No Leak Detected',
+        urgency_level: rawData.urgency_level || 'Low',
+        estimated_monthly_loss_liters: typeof rawData.estimated_monthly_loss_liters === 'number' ? rawData.estimated_monthly_loss_liters : 0,
+        estimated_monthly_cost_loss: typeof rawData.estimated_monthly_cost_loss === 'number' ? rawData.estimated_monthly_cost_loss : 0,
+        detected_signal_details: Array.isArray(rawData.detected_signal_details) ? rawData.detected_signal_details : [],
+      };
 
       // 2. Render Gauge & Metrics
       setGaugeScore(data.score);
@@ -263,10 +282,14 @@ document.addEventListener('DOMContentLoaded', () => {
       aiText.style.display = 'block';
       aiText.textContent = aiData.explanation;
     } catch (err) {
-      console.error(err);
+      console.error('Leak assessment error:', err);
       loading.style.display = 'none';
       aiText.style.display = 'block';
-      aiText.textContent = 'Unable to fetch leak calculation. Please check backend API server.';
+      aiText.textContent = 'Unable to fetch leak calculation. Showing offline fallback estimates.';
+      setGaugeScore(0);
+      urgencyBadge.textContent = 'Urgency: Low';
+      urgencyBadge.className = 'status-pill green';
+      flagBadge.textContent = 'No Leak Detected';
     } finally {
       runBtn.disabled = false;
       runBtn.style.opacity = '1';
@@ -308,7 +331,16 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      const data = await res.json();
+      const rawData = await res.json();
+      const data = {
+        total_liters: typeof rawData.total_liters === 'number' ? rawData.total_liters : 0,
+        per_capita_daily_lpd: typeof rawData.per_capita_daily_lpd === 'number' ? rawData.per_capita_daily_lpd : 0,
+        efficiency_status: rawData.efficiency_status || 'Good / Aligned with SDG 6 Target',
+        potential_monthly_savings_liters: typeof rawData.potential_monthly_savings_liters === 'number' ? rawData.potential_monthly_savings_liters : 0,
+        breakdown: Array.isArray(rawData.breakdown) ? rawData.breakdown : [],
+        assumptions: Array.isArray(rawData.assumptions) ? rawData.assumptions : [],
+        sdg_comparison_pct: typeof rawData.sdg_comparison_pct === 'number' ? rawData.sdg_comparison_pct : 0,
+      };
       currentHabitData = data;
 
       // Update Summary Cards
