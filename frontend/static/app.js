@@ -25,10 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
       panels.forEach((p) => p.classList.remove('active'));
 
       btn.classList.add('active');
-      const targetId = `panel-${btn.dataset.tab}`;
+      const tabName = btn.dataset.tab;
+      const targetId = `panel-${tabName}`;
       const targetPanel = document.getElementById(targetId);
       if (targetPanel) {
         targetPanel.classList.add('active');
+      }
+      if (tabName === 'savings' && currentHabitData) {
+        updateSavingsPlanner(currentHabitData);
       }
     });
   });
@@ -131,13 +135,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('members').value = scenario.habit.members;
     }
 
-    // 3. Automatically run calculation for active tab
-    const activeTab = document.querySelector('.tab-btn.active').dataset.tab;
-    if (activeTab === 'leak') {
-      runLeakAssessment();
-    } else {
-      runHabitAssessment();
-    }
+    // 3. Automatically run calculation for both tabs to keep panels in sync
+    runLeakAssessment();
+    runHabitAssessment();
   }
 
   // --------------------------------------------------------------------------

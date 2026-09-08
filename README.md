@@ -11,7 +11,7 @@
 
 **An AI-Powered Hybrid Intelligence System for Early Household Leak Detection & Transparent Consumption Benchmark Optimization**
 
-*Built for the 1M1B AI for Sustainability Virtual Internship (in collaboration with IBM SkillsBuild & AICTE)*
+*An AI for Sustainability Solution for Household Conservation & Early Leak Detection*
 
 ---
 
@@ -261,8 +261,7 @@ This project adheres to strict Responsible AI guidelines:
 
 **Nevil Usdad**  
 *JAIN (Deemed-to-be University)*  
-Developed for the **1M1B AI for Sustainability Virtual Internship**  
-*In Collaboration with **IBM SkillsBuild** & **AICTE***
+Developed for AI for Sustainability Project Initiative
 
 ---
 

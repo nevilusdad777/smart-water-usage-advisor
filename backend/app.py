@@ -92,7 +92,7 @@ def call_llm(prompt: str, fallback_text: str = "") -> str:
         return fallback_text
     try:
         response = _client.messages.create(
-            model="claude-sonnet-4-6",
+            model="claude-3-5-sonnet-20241022",
             max_tokens=500,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -104,6 +104,19 @@ def call_llm(prompt: str, fallback_text: str = "") -> str:
 @app.route("/")
 def index():
     return send_from_directory(TEMPLATE_DIR, "index.html")
+
+
+@app.route("/static/<path:filename>")
+def serve_static(filename):
+    return send_from_directory(STATIC_DIR, filename)
+
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    """Ensure API errors return structured JSON instead of HTML error pages."""
+    response = jsonify({"error": str(e), "status": "error"})
+    response.status_code = getattr(e, "code", 500)
+    return response
 
 
 @app.route("/api/scenarios", methods=["GET"])
