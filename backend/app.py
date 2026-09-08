@@ -13,12 +13,17 @@ Then open http://localhost:5000 in your browser.
 """
 
 import os
+import sys
 from flask import Flask, request, jsonify, send_from_directory
 
-from leak_model import compute_leak_risk
-from habit_model import estimate_monthly_usage
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
 
-app = Flask(__name__, static_folder="../frontend/static", static_url_path="/static")
+STATIC_DIR = os.path.join(BASE_DIR, "..", "frontend", "static")
+TEMPLATE_DIR = os.path.join(BASE_DIR, "..", "frontend", "templates")
+
+app = Flask(__name__, static_folder=STATIC_DIR, static_url_path="/static")
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
 
@@ -98,7 +103,7 @@ def call_llm(prompt: str, fallback_text: str = "") -> str:
 
 @app.route("/")
 def index():
-    return send_from_directory("../frontend/templates", "index.html")
+    return send_from_directory(TEMPLATE_DIR, "index.html")
 
 
 @app.route("/api/scenarios", methods=["GET"])
