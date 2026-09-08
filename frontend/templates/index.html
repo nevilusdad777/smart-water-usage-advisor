@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Smart Water Usage Advisor — AI Leak Detection & Footprint Optimization</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- TOP BRANDING HEADER -->
+    <header class="app-header">
+      <div class="header-top">
+        <div class="brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+          </div>
+          <div>
+            <span class="brand-title">Smart Water Usage Advisor</span>
+            <span class="brand-sub">AI-Powered Leak Detection & Household Footprint Planner</span>
+          </div>
+        </div>
+        <div class="header-badges">
+          <span class="badge badge-sdg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            SDG 6: Clean Water
+          </span>
+          <span class="badge badge-internship">1M1B Internship · IBM SkillsBuild</span>
+        </div>
+      </div>
+
+      <!-- PRESET SCENARIOS QUICK BAR -->
+      <div class="preset-bar">
+        <span class="preset-label">⚡ Quick Presets:</span>
+        <div id="scenarioButtons" class="preset-buttons">
+          <!-- Populated by JS -->
+          <button class="btn-preset" data-scenario="efficient_home">🌱 Eco Champion</button>
+          <button class="btn-preset" data-scenario="minor_toilet_leak">🚽 Running Toilet</button>
+          <button class="btn-preset" data-scenario="major_line_leak">🚨 High Risk Leak</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- NAVIGATION TABS -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" data-tab="leak">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6m0 4v10M4.93 4.93l4.24 4.24m5.66 5.66l4.24 4.24M2 12h6m4 0h10M4.93 19.07l4.24-4.24m5.66-5.66l4.24-4.24"/></svg>
+        Leak Risk Quiz
+      </button>
+      <button class="tab-btn" data-tab="habit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+        Habit & Footprint Advisor
+      </button>
+      <button class="tab-btn" data-tab="savings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Savings & SDG Benchmark
+      </button>
+    </nav>
+
+    <!-- TAB 1: LEAK DETECTION PANEL -->
+    <section class="panel active" id="panel-leak">
+      <div class="panel-grid">
+        <!-- QUIZ CARD -->
+        <div class="card quiz-card">
+          <div class="card-header">
+            <h3>Diagnostic Self-Assessment</h3>
+            <p>Answer 4 key household observations to calculate your weighted leak risk.</p>
+          </div>
+
+          <div class="quiz-fields">
+            <div class="quiz-item">
+              <div class="quiz-info">
+                <div class="quiz-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                <div>
+                  <label>1. Moving Water Meter</label>
+                  <span class="quiz-desc">With all household taps & appliances turned off, is your main water meter dial still spinning?</span>
+                </div>
+              </div>
+              <div class="yn-toggle" data-q="meter_moves">
+                <button type="button" data-val="yes">Yes</button>
+                <button type="button" data-val="no" class="selected">No</button>
+              </div>
+            </div>
+
+            <div class="quiz-item">
+              <div class="quiz-info">
+                <div class="quiz-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+                <div>
+                  <label>2. Unexplained Bill Spike</label>
+                  <span class="quiz-desc">Have you noticed an abrupt, unexplained rise in your monthly water utility bill?</span>
+                </div>
+              </div>
+              <div class="yn-toggle" data-q="bill_spike">
+                <button type="button" data-val="yes">Yes</button>
+                <button type="button" data-val="no" class="selected">No</button>
+              </div>
+            </div>
+
+            <div class="quiz-item">
+              <div class="quiz-info">
+                <div class="quiz-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M3 15h18M5 6l7-3 7 3"/></svg></div>
+                <div>
+                  <label>3. Damp Patches / Wall Seepage</label>
+                  <span class="quiz-desc">Are there damp spots, peeling paint, or mold near walls, floors, or pipe joints?</span>
+                </div>
+              </div>
+              <div class="yn-toggle" data-q="damp_patches">
+                <button type="button" data-val="yes">Yes</button>
+                <button type="button" data-val="no" class="selected">No</button>
+              </div>
+            </div>
+
+            <div class="quiz-item">
+              <div class="quiz-info">
+                <div class="quiz-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 11V7a5 5 0 0 1 10 0v4M5 11h14v10H5z"/></svg></div>
+                <div>
+                  <label>4. Running Toilet Cistern</label>
+                  <span class="quiz-desc">Does your toilet tank continuously trickle or refill even when not recently flushed?</span>
+                </div>
+              </div>
+              <div class="yn-toggle" data-q="cistern_running">
+                <button type="button" data-val="yes">Yes</button>
+                <button type="button" data-val="no" class="selected">No</button>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-primary" id="runLeak">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Compute Leak Risk Score
+          </button>
+        </div>
+
+        <!-- RESULTS CARD -->
+        <div class="card result-card" id="leakResult">
+          <div class="card-header">
+            <h3>Risk Assessment Report</h3>
+            <span class="status-pill" id="leakUrgencyBadge">Awaiting Quiz Input</span>
+          </div>
+
+          <!-- GAUGE & SCORE -->
+          <div class="score-display">
+            <div class="gauge-wrapper">
+              <svg class="gauge-svg" viewBox="0 0 120 120">
+                <circle class="gauge-bg" cx="60" cy="60" r="52"></circle>
+                <circle class="gauge-progress" id="gaugeProgress" cx="60" cy="60" r="52"></circle>
+              </svg>
+              <div class="gauge-text">
+                <span class="gauge-val" id="leakScoreVal">0</span>
+                <span class="gauge-max">/100</span>
+              </div>
+            </div>
+
+            <div class="score-summary">
+              <div class="flag-badge" id="leakFlagBadge">No Risk Computed</div>
+              <div class="impact-metrics">
+                <div class="metric-box">
+                  <span class="metric-num" id="leakEstWater">0 L</span>
+                  <span class="metric-lbl">Est. Monthly Loss</span>
+                </div>
+                <div class="metric-box">
+                  <span class="metric-num" id="leakEstCost">$0.00</span>
+                  <span class="metric-lbl">Est. Utility Waste</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SIGNAL BREAKDOWN -->
+          <div class="signals-section" id="leakSignalSection">
+            <h4>Detected Risk Signals</h4>
+            <div id="leakSignalsList" class="signals-list">
+              <div class="empty-state">Select your answers and click "Compute Leak Risk Score" to view signal breakdowns.</div>
+            </div>
+          </div>
+
+          <!-- AI EXPLANATION BOX -->
+          <div class="ai-box" id="leakAiBox">
+            <div class="ai-box-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12L2.5 7.5"/><path d="M12 12v10"/></svg>
+              <span>AI Advisor Insights & Action Plan</span>
+            </div>
+            <div class="loading-spinner" id="leakLoading" style="display:none;">
+              <div class="spinner"></div> Generating smart explanation...
+            </div>
+            <div class="ai-content" id="leakAiText">Click "Compute Leak Risk Score" above to generate insights.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: HABIT ADVISOR PANEL -->
+    <section class="panel" id="panel-habit">
+      <div class="panel-grid">
+        <!-- HABIT INPUTS CARD -->
+        <div class="card habit-form-card">
+          <div class="card-header">
+            <h3>Household Habits Assessment</h3>
+            <p>Customize sliders and options to calculate monthly consumption & savings potential.</p>
+          </div>
+
+          <div class="form-fields">
+            <!-- HOUSEHOLD SIZE -->
+            <div class="field-group">
+              <label>Household Members</label>
+              <div class="number-stepper">
+                <button type="button" class="btn-step" id="btnStepDown">-</button>
+                <input type="number" id="members" value="3" min="1" max="10" readonly>
+                <button type="button" class="btn-step" id="btnStepUp">+</button>
+                <span class="step-unit">Person(s)</span>
+              </div>
+            </div>
+
+            <!-- SHOWER DURATION SLIDER -->
+            <div class="field-group">
+              <div class="label-row">
+                <label for="shower">Daily Average Shower Length</label>
+                <span class="slider-val"><span id="showerVal">10</span> min/person</span>
+              </div>
+              <input type="range" id="shower" min="1" max="30" value="10" class="custom-slider">
+            </div>
+
+            <!-- DISH WASHING TAP -->
+            <div class="field-group">
+              <label for="tapDishes">Kitchen Tap Dishwashing Style</label>
+              <select id="tapDishes" class="custom-select">
+                <option value="off">Turned OFF while scrubbing (Rinse-only ~2 min)</option>
+                <option value="on" selected>Left RUNNING continuously (~10 min)</option>
+              </select>
+            </div>
+
+            <!-- GARDEN HOSE SLIDER -->
+            <div class="field-group">
+              <div class="label-row">
+                <label for="garden">Garden / Outdoor Hose Watering</label>
+                <span class="slider-val"><span id="gardenVal">10</span> min/day</span>
+              </div>
+              <input type="range" id="garden" min="0" max="60" value="10" class="custom-slider">
+            </div>
+
+            <!-- LAUNDRY LOADS -->
+            <div class="field-group">
+              <div class="row2">
+                <div>
+                  <label for="laundryFreq">Washing Machine Runs/Week</label>
+                  <input type="number" id="laundryFreq" value="3" min="0" max="20" class="custom-input">
+                </div>
+                <div>
+                  <label for="laundry">Load Efficiency</label>
+                  <select id="laundry" class="custom-select">
+                    <option value="full">Always Full Loads</option>
+                    <option value="half" selected>Often Half-Full Loads</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-primary" id="runHabit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+            Analyze Water Footprint
+          </button>
+        </div>
+
+        <!-- HABIT RESULTS CARD -->
+        <div class="card habit-result-card" id="habitResult">
+          <div class="card-header">
+            <h3>Monthly Footprint Breakdown</h3>
+            <span class="status-pill green" id="habitEfficiencyStatus">Awaiting Calculation</span>
+          </div>
+
+          <!-- STATS OVERVIEW -->
+          <div class="footprint-stats">
+            <div class="stat-card primary">
+              <span class="stat-val" id="habitTotalLiters">0 L</span>
+              <span class="stat-lbl">Total Monthly Footprint</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-val" id="habitPerCapita">0 LPD</span>
+              <span class="stat-lbl">Per Person Daily (LPD)</span>
+            </div>
+            <div class="stat-card highlight">
+              <span class="stat-val" id="habitSavingsVal">0 L/mo</span>
+              <span class="stat-lbl">Potential Monthly Savings</span>
+            </div>
+          </div>
+
+          <!-- USAGE DISTRIBUTION BAR CHART -->
+          <div class="chart-section">
+            <h4>Activity Distribution Breakdown</h4>
+            <div class="distribution-stacked-bar" id="stackedBar"></div>
+            <div class="breakdown-grid" id="breakdownGrid">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- ASSUMPTIONS NOTE -->
+          <div class="assumptions-box">
+            <span class="assumptions-title">📋 Transparent Model Assumptions:</span>
+            <div id="habitAssumptionsList">Calculated using standard flow rate benchmarks.</div>
+          </div>
+
+          <!-- AI ADVISOR INSIGHTS -->
+          <div class="ai-box">
+            <div class="ai-box-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12L2.5 7.5"/><path d="M12 12v10"/></svg>
+              <span>AI Personalized Action Plan</span>
+            </div>
+            <div class="loading-spinner" id="habitLoading" style="display:none;">
+              <div class="spinner"></div> Calculating personalized tips...
+            </div>
+            <div class="ai-content" id="habitAiText">Click "Analyze Water Footprint" to view custom recommendations.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: SAVINGS & SDG BENCHMARK -->
+    <section class="panel" id="panel-savings">
+      <div class="card planner-card">
+        <div class="card-header">
+          <h3>UN SDG 6 Sustainability Benchmark & Savings Planner</h3>
+          <p>Target: 135 Liters per person per day (SDG 6 Urban Benchmark)</p>
+        </div>
+
+        <div class="sdg-comparison-box">
+          <div class="sdg-metric">
+            <span class="sdg-val">135 LPD</span>
+            <span class="sdg-lbl">SDG 6 Recommended Target</span>
+          </div>
+          <div class="sdg-vs">vs</div>
+          <div class="sdg-metric">
+            <span class="sdg-val" id="plannerCurrentLpd">-- LPD</span>
+            <span class="sdg-lbl">Your Current Household LPD</span>
+          </div>
+          <div class="sdg-metric status-metric">
+            <span class="sdg-val" id="plannerStatusPct">--%</span>
+            <span class="sdg-lbl" id="plannerStatusLbl">Variance</span>
+          </div>
+        </div>
+
+        <!-- SIMULATOR -->
+        <div class="simulator-box">
+          <h4>🌱 Interactive Savings Simulator</h4>
+          <p>Adjust habit changes below to see your annual impact:</p>
+          
+          <div class="sim-controls">
+            <div class="sim-control">
+              <label>Reduce Shower by: <span id="simShowerVal">3</span> mins</label>
+              <input type="range" id="simShower" min="0" max="15" value="3" class="custom-slider">
+            </div>
+            <div class="sim-control">
+              <label>Fix Toilet Leak / Turn off Tap: <span id="simTapVal">Yes</span></label>
+              <div class="yn-toggle" id="simTapToggle">
+                <button type="button" class="selected" data-val="yes">Yes</button>
+                <button type="button" data-val="no">No</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="sim-results">
+            <div class="sim-card">
+              <span class="sim-num" id="simAnnualLiters">0 L</span>
+              <span class="sim-lbl">Annual Water Saved</span>
+            </div>
+            <div class="sim-card">
+              <span class="sim-num" id="simAnnualMoney">$0.00</span>
+              <span class="sim-lbl">Annual Bill Reduction</span>
+            </div>
+            <div class="sim-card">
+              <span class="sim-num" id="simTreesEquiv">0</span>
+              <span class="sim-lbl">Equivalent Tree-Water Days</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-actions">
+          <button class="btn-secondary" id="btnPrintReport">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print Sustainability Report
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <p>Built for <strong>1M1B AI for Sustainability Virtual Internship</strong> · IBM SkillsBuild & AICTE</p>
+      <p class="foot-sub">Hybrid Architecture: Weighted Multi-Signal Risk Engine + Transparent AI Explanation Layer</p>
+    </footer>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
+
