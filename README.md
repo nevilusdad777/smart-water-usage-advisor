@@ -4,6 +4,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.9%2B-blue?style=for-the-badge&logo=python&logoColor=white)
 ![Flask](https://img.shields.io/badge/Flask-3.0%2B-000000?style=for-the-badge&logo=flask&logoColor=white)
+![Vercel Live](https://img.shields.io/badge/Vercel-Live%20Demo-000000?style=for-the-badge&logo=vercel&logoColor=white)
 ![Claude AI](https://img.shields.io/badge/LLM-Claude%203.5%20%2F%20Sonnet-7C3AED?style=for-the-badge&logo=anthropic&logoColor=white)
 ![SDG 6](https://img.shields.io/badge/UN%20SDG-6%20Clean%20Water-00AED0?style=for-the-badge&logo=united-nations&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
@@ -11,6 +12,10 @@
 **An AI-Powered Hybrid Intelligence System for Early Household Leak Detection & Transparent Consumption Benchmark Optimization**
 
 *Built for the 1M1B AI for Sustainability Virtual Internship (in collaboration with IBM SkillsBuild & AICTE)*
+
+---
+
+🌐 **Live Production Deployment**: [https://smart-water-usage-advisor.vercel.app](https://smart-water-usage-advisor.vercel.app)
 
 ---
 
