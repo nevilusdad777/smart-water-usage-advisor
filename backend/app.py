@@ -23,6 +23,9 @@ if BASE_DIR not in sys.path:
 STATIC_DIR = os.path.join(BASE_DIR, "..", "frontend", "static")
 TEMPLATE_DIR = os.path.join(BASE_DIR, "..", "frontend", "templates")
 
+from leak_model import compute_leak_risk
+from habit_model import estimate_monthly_usage
+
 app = Flask(__name__, static_folder=STATIC_DIR, static_url_path="/static")
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")

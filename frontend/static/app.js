@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let val = parseInt(membersInput.value) || 1;
     if (val > 1) {
       membersInput.value = val - 1;
+      runHabitAssessment();
     }
   });
 
@@ -56,21 +57,33 @@ document.addEventListener('DOMContentLoaded', () => {
     let val = parseInt(membersInput.value) || 1;
     if (val < 10) {
       membersInput.value = val + 1;
+      runHabitAssessment();
     }
   });
 
-  // Sliders Live Preview
+  // Sliders Live Preview & Realtime Recalculation
   const showerInput = document.getElementById('shower');
   const showerVal = document.getElementById('showerVal');
   showerInput.addEventListener('input', () => {
     showerVal.textContent = showerInput.value;
+    runHabitAssessment();
   });
 
   const gardenInput = document.getElementById('garden');
   const gardenVal = document.getElementById('gardenVal');
   gardenInput.addEventListener('input', () => {
     gardenVal.textContent = gardenInput.value;
+    runHabitAssessment();
   });
+
+  const tapDishesSelect = document.getElementById('tapDishes');
+  if (tapDishesSelect) tapDishesSelect.addEventListener('change', runHabitAssessment);
+
+  const laundrySelect = document.getElementById('laundry');
+  if (laundrySelect) laundrySelect.addEventListener('change', runHabitAssessment);
+
+  const laundryFreqInput = document.getElementById('laundryFreq');
+  if (laundryFreqInput) laundryFreqInput.addEventListener('input', runHabitAssessment);
 
   function getQuizAnswers() {
     const quizAnswers = {};
